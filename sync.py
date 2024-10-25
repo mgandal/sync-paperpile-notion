@@ -22,6 +22,9 @@ def notion_add_entry(
     authors='',
     year='0',
     ref_id='',
+    journal='',
+    pmid='',
+    doi='',
     link='',
 ):
     url = "https://api.notion.com/v1/pages"
@@ -50,6 +53,30 @@ def notion_add_entry(
                     "type": "text",
                     "text": {
                         "content": year,
+                    }
+                }],
+            },
+            'Journal': {
+                "rich_text": [{
+                    "type": "text",
+                    "text": {
+                        "content": journal,
+                    }
+                }],
+            },
+            'PMID': {
+                "rich_text": [{
+                    "type": "text",
+                    "text": {
+                        "content": pmid,
+                    }
+                }],
+            },
+            'DOI': {
+                "rich_text": [{
+                    "type": "text",
+                    "text": {
+                        "content": doi,
                     }
                 }],
             },
@@ -86,6 +113,9 @@ def notion_update_page(
     year='0',
     ref_id='',
     link='',
+    journal='',
+    pmid='',
+    doi='',
 ):
     url = f"https://api.notion.com/v1/pages/{page_id}"
     payload = {
@@ -116,6 +146,30 @@ def notion_update_page(
                     }
                 }],
             },
+            'Journal': {
+                "rich_text": [{
+                    "type": "text",
+                    "text": {
+                        "content": journal,
+                    }
+                }],
+            },
+            'PMID': {
+                "rich_text": [{
+                    "type": "text",
+                    "text": {
+                        "content": pmid,
+                    }
+                }],
+            },
+            'DOI': {
+                "rich_text": [{
+                    "type": "text",
+                    "text": {
+                        "content": doi,
+                    }
+                }],
+            },            
             'Reference ID': {
                 "rich_text": [{
                     "type": "text",
@@ -230,6 +284,10 @@ def main():
         authors = authors.replace(' and ', '; ')
         authors = clean_str(authors)
 
+        journal = entry.get('journal', '')
+        pmid = entry.get('pmid', '')
+        doi = entry.get('doi', '')
+
         year = entry.get('year', '')
         link = entry.get('url', '')
         ref_id = entry.get('ID')
@@ -241,6 +299,9 @@ def main():
                 year=year,
                 ref_id=ref_id,
                 link=link,
+                journal=journal,
+                pmid=pmid,
+                doi=doi
             )
             update_archive = True
         elif entry not in archive: # update existing page
@@ -253,6 +314,9 @@ def main():
                     year=year,
                     ref_id=ref_id,
                     link=link,
+                    journal=journal,
+                    pmid=pmid,
+                    doi=doi
                 )
                 update_archive = True
 
